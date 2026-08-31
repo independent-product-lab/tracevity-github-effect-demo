@@ -63,11 +63,22 @@ run_variant() {
     --repo "$GITHUB_REPOSITORY" \
     --comment-id "$comment_id" \
     --out "$directory/evidence.json"
+  set +e
   tracevity inspect \
     --manifest "$directory/manifest.json" \
     --requirements "$work/requirements.json" \
     --evidence "$directory/evidence.json" \
     --out "$directory/reconstruction-report.json"
+  local inspect_exit=$?
+  set -e
+  local expected_inspect_exit=0
+  if [[ "$variant" == "broken" ]]; then
+    expected_inspect_exit=2
+  fi
+  if [[ "$inspect_exit" -ne "$expected_inspect_exit" ]]; then
+    echo "$variant Inspect returned $inspect_exit; expected $expected_inspect_exit" >&2
+    exit 1
+  fi
   tracevity report render "$directory/reconstruction-report.json" \
     --html "$directory/reconstruction-report.html" \
     --markdown "$directory/reconstruction-report.md"
@@ -98,4 +109,3 @@ tracevity report render "$work/gate-repaired-report.json" \
   --markdown "$work/gate-repaired-report.md"
 
 python scripts/verify_results.py "$work" --summary "$work/reference-summary.json"
-
