@@ -1,0 +1,73 @@
+{
+  "schema_version": "0.3",
+  "profile_id": "external-effect-verification-github-comment-v0.5",
+  "title": "GitHub issue-comment external-effect verification",
+  "description": "Requirements for establishing that a recorded local agent operation is exactly correlated to an observed GitHub issue-comment record, without claiming cryptographic record authenticity.",
+  "use_case": "external_effect_verification",
+  "scope": {
+    "system_boundary": "One explicitly selected local OTLP trace artifact plus one bounded GitHub issue-comment evidence envelope acquired locally by stable comment ID.",
+    "reconstruction_question": "Does an external GitHub record exist for the exact operation identifier recorded by this agent execution?",
+    "exclusions": [
+      "hidden chain-of-thought",
+      "latent motive",
+      "provider acceptance before the comment became observable",
+      "cryptographic authenticity of the GitHub record",
+      "effects outside the selected issue comment"
+    ]
+  },
+  "requires": [
+    {
+      "evidence": "requested_effect",
+      "necessity": "REQUIRED",
+      "minimum_presence": "PRESENT",
+      "minimum_correlation": "NONE",
+      "acceptable_source_independence": ["TRACE_INTERNAL"],
+      "acceptable_acquisition_provenance": ["USER_PROVIDED"],
+      "minimum_authenticity": "UNVERIFIED",
+      "minimum_capture_completeness": "COMPLETE",
+      "acceptable_sources": ["AGENT_TRACE"],
+      "rationale": "The trace must record the operation that was requested, independently of whether the destination changed."
+    },
+    {
+      "evidence": "downstream_correlation",
+      "necessity": "REQUIRED",
+      "minimum_presence": "PRESENT",
+      "minimum_correlation": "NONE",
+      "acceptable_source_independence": ["TRACE_INTERNAL"],
+      "acceptable_acquisition_provenance": ["USER_PROVIDED"],
+      "minimum_authenticity": "UNVERIFIED",
+      "minimum_capture_completeness": "COMPLETE",
+      "acceptable_sources": ["AGENT_TRACE"],
+      "rationale": "The trace must retain the stable external operation identifier used for the destination join."
+    },
+    {
+      "evidence": "external_effect_state",
+      "necessity": "REQUIRED",
+      "minimum_presence": "PRESENT",
+      "minimum_correlation": "EXACT",
+      "acceptable_source_independence": ["EXTERNAL_SYSTEM_RECORD"],
+      "acceptable_acquisition_provenance": ["LOCAL_ADAPTER_PROVIDER_API"],
+      "minimum_authenticity": "UNVERIFIED",
+      "minimum_capture_completeness": "COMPLETE",
+      "acceptable_sources": ["EXTERNAL_STATE"],
+      "rationale": "The destination record must be read from GitHub and joined to the selected trace by the exact comment identifier."
+    }
+  ],
+  "privacy_constraints": {
+    "production_trace_upload_permitted": false,
+    "capture_minimization_required": true,
+    "sensitive_classes": ["PROMPTS", "OUTPUTS", "PII", "SECRETS", "SOURCE_CODE", "TOOL_ARGUMENTS", "TOOL_RESULTS"],
+    "retention": {
+      "policy_required": true,
+      "maximum_days": 0,
+      "deletion_required": true
+    },
+    "redaction_required": true,
+    "customer_controlled_capture_required": true
+  },
+  "notes": [
+    "GitHub API retrieval over TLS is not a cryptographic proof of record authenticity.",
+    "A matching destination record does not reveal hidden reasoning or establish effects outside that record."
+  ]
+}
+
