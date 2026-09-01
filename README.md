@@ -22,7 +22,7 @@ It demonstrates a narrow but consequential result: the GitHub action can still h
 4. Enter the issue number.
 5. Download the workflow artifact after the job completes.
 
-The workflow installs `tracevity==0.5.1` from public PyPI and `mlflow-tracing==3.15.2`. It does not check out or access Tracevity's private source repository. Its only write authority is the repository-scoped `GITHUB_TOKEN`, with `contents: read` and `issues: write`. It runs only by explicit `workflow_dispatch`; untrusted fork pull requests never receive the write-enabled job.
+The workflow installs `tracevity==0.5.2` from public PyPI and `mlflow-tracing==3.15.2`. It does not check out or access Tracevity's private source repository. Its only write authority is the repository-scoped `GITHUB_TOKEN`, with `contents: read` and `issues: write`. It runs only by explicit `workflow_dispatch`; untrusted fork pull requests never receive the write-enabled job.
 
 ## Expected outcomes
 
@@ -52,7 +52,7 @@ Never adapt this repository by posting private prompts, credentials, source code
 
 ## Versions
 
-- Tracevity CLI: `0.5.1`
+- Tracevity CLI: `0.5.2`
 - MLflow Tracing: `3.15.2`
 - OTLP HTTP exporter: `1.44.0`
 - Inspection Manifest: `0.2`
