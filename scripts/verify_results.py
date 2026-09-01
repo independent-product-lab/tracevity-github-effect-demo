@@ -92,7 +92,7 @@ def main() -> int:
         "schema_version": "0.1",
         "classification": "PUBLIC_DEMONSTRATION_NOT_CUSTOMER_PRODUCTION",
         "runtime": {"name": "mlflow-tracing", "version": "3.15.2"},
-        "tracevity": "0.5.0",
+        "tracevity": "0.5.1",
         "adapter": {"id": "github.issue-comment", "version": "0.1"},
         "comments": comments,
         "baseline": {"external_effect_state": "ESTABLISHED", "authenticity": "UNVERIFIED"},
