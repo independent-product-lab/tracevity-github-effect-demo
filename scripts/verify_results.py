@@ -74,7 +74,13 @@ def main() -> int:
         assert record.get("source_independence") == "EXTERNAL_SYSTEM_RECORD"
         assert record.get("acquisition_provenance") == "LOCAL_ADAPTER_PROVIDER_API"
         assert record.get("record_authenticity") == "UNVERIFIED"
-        comments[variant] = effect.get("html_url")
+        comment_id = effect.get("comment_id")
+        comment_url = effect.get("html_url")
+        assert isinstance(comment_id, int) and comment_id > 0
+        assert isinstance(comment_url, str) and comment_url.endswith(
+            f"#issuecomment-{comment_id}"
+        )
+        comments[variant] = {"id": comment_id, "url": comment_url}
         for name in (
             "trace.otlp.pb",
             "capture-receipt.json",
@@ -86,7 +92,18 @@ def main() -> int:
             path = work / variant / name
             assert path.is_file() and path.stat().st_size > 0
             artifacts[f"{variant}/{name}"] = hashlib.sha256(path.read_bytes()).hexdigest()
-    assert len(set(comments.values())) == 3
+    assert len({comment["id"] for comment in comments.values()}) == 3
+    for name in (
+        "gate-broken-report.json",
+        "gate-broken-report.html",
+        "gate-broken-report.md",
+        "gate-repaired-report.json",
+        "gate-repaired-report.html",
+        "gate-repaired-report.md",
+    ):
+        path = work / name
+        assert path.is_file() and path.stat().st_size > 0
+        artifacts[name] = hashlib.sha256(path.read_bytes()).hexdigest()
 
     summary = {
         "schema_version": "0.1",
@@ -114,4 +131,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
