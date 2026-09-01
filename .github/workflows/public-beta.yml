@@ -35,7 +35,7 @@ jobs:
 
       - name: Install only public pinned packages
         run: |
-          python -m pip install --disable-pip-version-check tracevity==0.5.3
+          python -m pip install --disable-pip-version-check tracevity==0.5.4
           python -m pip install --disable-pip-version-check -r requirements.txt
 
       - name: Run capture, real effects, provider reads, Inspect, reports, and Gate
@@ -52,4 +52,3 @@ jobs:
           if-no-files-found: error
           retention-days: 90
           compression-level: 6
-
