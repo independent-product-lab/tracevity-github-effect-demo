@@ -14,6 +14,8 @@ MLflow Tracing 3.15.2
 
 It demonstrates a narrow but consequential result: the GitHub action can still happen and the OTLP can still be valid while a release loses the identifier needed to reconstruct the external effect.
 
+To see how a missing action ID affects Gate using synthetic data, follow the [offline quickstart](https://tracevity.com/quickstart/#local-step). The [versioned fixture manifest](https://tracevity.com/examples/offline-effect/v0.1/manifest.json) describes the inputs and expected results.
+
 ## Run the public black-box workflow
 
 1. Fork or clone this repository into a GitHub repository where Actions may comment on issues.
